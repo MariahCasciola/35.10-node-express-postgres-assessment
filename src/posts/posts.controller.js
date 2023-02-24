@@ -1,5 +1,11 @@
 const service = require("./posts.service.js");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
+const hasProperties = require("../errors/hasProperties");
+const hasRequiredProperties = hasProperties(
+  "post_body",
+  "post_id",
+  "post_title"
+);
 
 async function postExists(req, res, next) {
   const { postId } = req.params;
@@ -13,8 +19,8 @@ async function postExists(req, res, next) {
 }
 
 async function create(req, res) {
-  // your solution here
-  res.json({ data: "" });
+  const data = await service.create(req.body.data);
+  res.status(201).json({ data });
 }
 
 async function update(req, res) {
@@ -28,7 +34,10 @@ async function destroy(req, res) {
 }
 
 module.exports = {
-  create: asyncErrorBoundary(create),
+  create: [
+    hasRequiredProperties,
+    asyncErrorBoundary(create),
+  ],
   update: [asyncErrorBoundary(postExists), asyncErrorBoundary(update)],
   delete: [asyncErrorBoundary(postExists), asyncErrorBoundary(destroy)],
 };
