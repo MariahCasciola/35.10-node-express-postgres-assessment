@@ -34,8 +34,9 @@ async function update(req, res) {
 }
 
 async function destroy(req, res) {
-  // your solution here
-  res.json({ data: "" });
+  const { post } = res.locals;
+  await service.delete(post.postId);
+  res.sendStatus(204);
 }
 
 module.exports = {

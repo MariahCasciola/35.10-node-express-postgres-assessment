@@ -18,7 +18,7 @@ function update(updatedPost) {
 }
 
 function destroy(postId) {
-  //your solution here
+  return knex("posts").where({ postId }).del();
 }
 
 module.exports = {
