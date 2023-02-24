@@ -13,8 +13,10 @@ function read(postId) {
 
 function update(updatedPost) {
   return knex("posts")
-    .where({ posts_id: updatedPost.posts_id })
-    .update(updatedPost, "*");
+    .where({ post_id: updatedPost.post_id })
+    .update(updatedPost, "*")
+    .returning("*")
+    .then((updatedPost) => updatedPost[0]);
 }
 
 function destroy(postId) {
