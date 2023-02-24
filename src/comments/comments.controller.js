@@ -17,8 +17,7 @@ async function list(req, res, next) {
 }
 
 async function listCommenterCount(req, res, next) {
-  // your solution here
-  res.json({ data: "" });
+  res.json({ data: await service.listCommenterCount() });
 }
 
 async function read(req, res, next) {
