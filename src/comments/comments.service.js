@@ -11,12 +11,26 @@ function listCommenterCount() {
     .count("c.comment_id")
     .groupBy("commenter_email")
     .orderBy("commenter_email")
-    .then((data)=>data.map((elements)=>{return {...elements, count: Number(elements.count)}}))
-    //orderBy varchar would be alphabetical
+    .then((data) =>
+      data.map((elements) => {
+        return { ...elements, count: Number(elements.count) };
+      })
+    );
+  //orderBy varchar would be alphabetical
 }
 
 function read(commentId) {
-  // your solution here
+  return knex("comments as c")
+    .join("users as u", "u.user_id", "c.commenter_id")
+    .join("posts as p", "p.post_id", "c.commenter_id")
+    .select(
+      "c.comment_id",
+      "c.comment",
+      "u.user_email as commenter_email",
+      "p.post_body as commented_post"
+    )
+    .where({ "c.comment_id": commentId })
+    .then((returnedRecords) => returnedRecords[0]); 
 }
 
 module.exports = {
