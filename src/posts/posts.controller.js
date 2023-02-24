@@ -24,8 +24,13 @@ async function create(req, res) {
 }
 
 async function update(req, res) {
-  // your solution here
-  res.json({ data: "" });
+  //create a body
+  const updatedPost = {
+    ...req.body.data,
+    posts_id: res.locals.post.posts_id,
+  };
+  const data = await service.update(updatedPost);
+  res.json({ data });
 }
 
 async function destroy(req, res) {
@@ -34,10 +39,7 @@ async function destroy(req, res) {
 }
 
 module.exports = {
-  create: [
-    hasRequiredProperties,
-    asyncErrorBoundary(create),
-  ],
+  create: [hasRequiredProperties, asyncErrorBoundary(create)],
   update: [asyncErrorBoundary(postExists), asyncErrorBoundary(update)],
   delete: [asyncErrorBoundary(postExists), asyncErrorBoundary(destroy)],
 };
