@@ -1,11 +1,5 @@
 const service = require("./posts.service.js");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
-const hasProperties = require("../errors/hasProperties");
-const hasRequiredProperties = hasProperties(
-  "post_body",
-  "post_id",
-  "post_title"
-);
 
 async function postExists(req, res, next) {
   const { postId } = req.params;
@@ -40,7 +34,7 @@ async function destroy(req, res) {
 }
 
 module.exports = {
-  create: [hasRequiredProperties, asyncErrorBoundary(create)],
+  create,
   update: [asyncErrorBoundary(postExists), asyncErrorBoundary(update)],
   delete: [asyncErrorBoundary(postExists), asyncErrorBoundary(destroy)],
 };
