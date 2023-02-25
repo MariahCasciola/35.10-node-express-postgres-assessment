@@ -29,7 +29,7 @@ async function update(req, res) {
 
 async function destroy(req, res) {
   const { post } = res.locals;
-  await service.delete(post.postId);
+  await service.delete(post.post_id);
   res.sendStatus(204);
 }
 
